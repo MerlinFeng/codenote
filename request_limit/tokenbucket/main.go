@@ -9,12 +9,14 @@ import (
 	"time"
 )
 
+// TokenBucket 令牌桶
 type TokenBucket struct {
 	rate      int // 令牌放入速度
 	tokenSize int // 令牌桶的容量
 	curNum    int // 当前桶中token
 }
 
+// NewTokenBucket 初始化
 func NewTokenBucket(rate, tokenSize int) *TokenBucket {
 	return &TokenBucket{
 		rate:      rate,
@@ -22,7 +24,8 @@ func NewTokenBucket(rate, tokenSize int) *TokenBucket {
 	}
 }
 
-func (t *TokenBucket) pushToken() chan struct{} {
+// PushToken 在桶中存放token
+func (t *TokenBucket) PushToken() chan struct{} {
 	tb := make(chan struct{}, t.tokenSize)
 	ticker := time.NewTicker(time.Duration(1000) * time.Microsecond)
 	//初始化token
@@ -47,8 +50,8 @@ func (t *TokenBucket) pushToken() chan struct{} {
 	return tb
 }
 
-// 取出token
-func (t *TokenBucket) popToken(bucket chan struct{}, n int) {
+// popToken 取出token
+func (t *TokenBucket) PopToken(bucket chan struct{}, n int) {
 	for i := 0; i < n; i++ {
 		_, ok := <-bucket
 		if ok {
@@ -62,11 +65,11 @@ func (t *TokenBucket) popToken(bucket chan struct{}, n int) {
 
 func main() {
 	tokenBucket := NewTokenBucket(10, 20)
-	tb := tokenBucket.pushToken()
+	tb := tokenBucket.PushToken()
 	reqLen := 100
 	for i := 0; i <= reqLen; i += tokenBucket.rate {
 		fmt.Println(i)
-		tokenBucket.popToken(tb, tokenBucket.rate)
+		tokenBucket.PopToken(tb, tokenBucket.rate)
 
 	}
 }

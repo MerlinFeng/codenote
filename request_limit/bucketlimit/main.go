@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// BucketLimit 漏桶结构
 type BucketLimit struct {
 	rate       float64 //漏桶中水的漏出速率
 	bucketSize float64 //漏桶最多能装的水大小
@@ -17,6 +18,7 @@ type BucketLimit struct {
 	curWater   float64 //当前桶里面的水
 }
 
+// NewBucketLimit  初始化
 func NewBucketLimit(rate float64, bucketSize int64) *BucketLimit {
 	return &BucketLimit{
 		bucketSize: float64(bucketSize),
@@ -26,6 +28,7 @@ func NewBucketLimit(rate float64, bucketSize int64) *BucketLimit {
 	}
 }
 
+// refresh 更新当前桶的容量
 func (b *BucketLimit) refresh() {
 	now := time.Now().UnixNano()
 	//时间差, 把纳秒换成秒
@@ -35,6 +38,7 @@ func (b *BucketLimit) refresh() {
 	return
 }
 
+// Allow 允许请求，是否超过桶的容量
 func (b *BucketLimit) Allow() bool {
 	b.refresh()
 	if b.curWater < b.bucketSize {

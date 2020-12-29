@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// CounterLimit 计数器
 type CounterLimit struct {
 	counter      int64 //计数器
 	limit        int64 //指定时间窗口内允许的最大请求数
@@ -17,6 +18,7 @@ type CounterLimit struct {
 	unixNano     int64 //unix时间戳,单位为纳秒
 }
 
+// NewCounterLimit 初始化
 func NewCounterLimit(interval time.Duration, limit int64) *CounterLimit {
 
 	return &CounterLimit{
@@ -27,6 +29,7 @@ func NewCounterLimit(interval time.Duration, limit int64) *CounterLimit {
 	}
 }
 
+// Allow 判断当前时间窗口是否允许请求
 func (c *CounterLimit) Allow() bool {
 
 	now := time.Now().UnixNano()
