@@ -51,7 +51,7 @@ func (t *TokenBucket) PushToken() chan struct{} {
 }
 
 // popToken 取出token
-func (t *TokenBucket) PopToken(bucket chan struct{}, n int) {
+func (t *TokenBucket) popToken(bucket chan struct{}, n int) {
 	for i := 0; i < n; i++ {
 		_, ok := <-bucket
 		if ok {
@@ -69,7 +69,7 @@ func main() {
 	reqLen := 100
 	for i := 0; i <= reqLen; i += tokenBucket.rate {
 		fmt.Println(i)
-		tokenBucket.PopToken(tb, tokenBucket.rate)
+		tokenBucket.popToken(tb, tokenBucket.rate)
 
 	}
 }

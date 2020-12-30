@@ -1,5 +1,7 @@
 # codenote
+
 公众号@码农札记
+
 ![](https://merlinfeng-1251215150.cos.ap-nanjing.myqcloud.com/img/code_note_1.png)
 
 对于后端开发来说，无论何种语言，数据库、缓存、高并发、分布式、服务器、服务优化等等都是必要掌握的技能，
